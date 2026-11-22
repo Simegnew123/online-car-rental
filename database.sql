@@ -1,6 +1,6 @@
 -- =====================================================
 -- Online Car Rental Management System with GPS Tracking
--- Database Schema for MySQL
+-- Database Schema for MySQL  (v2.0 — Professional Edition)
 -- =====================================================
 
 CREATE DATABASE IF NOT EXISTS car_rental_db
@@ -12,36 +12,42 @@ USE car_rental_db;
 -- Table: users
 -- ---------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    full_name     VARCHAR(100)   NOT NULL,
-    email         VARCHAR(150)   NOT NULL UNIQUE,
-    password      VARCHAR(255)   NOT NULL,
-    phone         VARCHAR(20)    DEFAULT NULL,
-    role          ENUM('customer','admin') DEFAULT 'customer',
-    license_number VARCHAR(50)   DEFAULT NULL,
-    license_image VARCHAR(255)   DEFAULT NULL,
-    status        ENUM('active','suspended','pending_verification') DEFAULT 'active',
-    created_at    TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    full_name       VARCHAR(100)   NOT NULL,
+    email           VARCHAR(150)   NOT NULL UNIQUE,
+    password        VARCHAR(255)   NOT NULL,
+    phone           VARCHAR(20)    DEFAULT NULL,
+    role            ENUM('customer','admin') DEFAULT 'customer',
+    license_number  VARCHAR(50)    DEFAULT NULL,
+    license_image   VARCHAR(255)   DEFAULT NULL,
+    avatar_color    VARCHAR(7)     DEFAULT '#2563eb',
+    status          ENUM('active','suspended','pending_verification') DEFAULT 'active',
+    created_at      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------
 -- Table: cars
 -- ---------------------------------------------------
 CREATE TABLE IF NOT EXISTS cars (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    name          VARCHAR(100)  NOT NULL,
-    brand         VARCHAR(50)   DEFAULT NULL,
-    type          ENUM('Sedan','SUV','Hatchback','Pickup','Van','Luxury','Electric') DEFAULT 'Sedan',
-    fuel_type     ENUM('Petrol','Diesel','Hybrid','Electric') DEFAULT 'Petrol',
-    transmission  ENUM('Manual','Automatic') DEFAULT 'Automatic',
-    seats         INT            DEFAULT 5,
-    price_per_day DECIMAL(10,2)  NOT NULL,
-    image         VARCHAR(255)   DEFAULT NULL,
-    description   TEXT           DEFAULT NULL,
-    status        ENUM('available','rented','under_repair','unavailable') DEFAULT 'available',
-    created_at    TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    name           VARCHAR(100)  NOT NULL,
+    brand          VARCHAR(50)   DEFAULT NULL,
+    type           ENUM('Sedan','SUV','Hatchback','Pickup','Van','Luxury','Electric') DEFAULT 'Sedan',
+    fuel_type      ENUM('Petrol','Diesel','Hybrid','Electric') DEFAULT 'Petrol',
+    transmission   ENUM('Manual','Automatic') DEFAULT 'Automatic',
+    seats          INT            DEFAULT 5,
+    doors          INT            DEFAULT 4,
+    luggage        INT            DEFAULT 2,
+    air_conditioning TINYINT(1)   DEFAULT 1,
+    bluetooth      TINYINT(1)     DEFAULT 1,
+    price_per_day  DECIMAL(10,2)  NOT NULL,
+    image          VARCHAR(255)   DEFAULT NULL,
+    description    TEXT           DEFAULT NULL,
+    status         ENUM('available','rented','under_repair','unavailable') DEFAULT 'available',
+    featured       TINYINT(1)     DEFAULT 0,
+    created_at     TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------
@@ -122,30 +128,68 @@ CREATE TABLE IF NOT EXISTS notifications (
 ) ENGINE=InnoDB;
 
 -- =====================================================
--- Seed Data
+-- SEED DATA
 -- =====================================================
 
 -- Default admin account (password: admin123)
-INSERT INTO users (full_name, email, password, phone, role, status) VALUES
-('Administrator', 'admin@carrental.com', '$2b$12$SoaOu.8T0bHtsk55usFZeeKVLiZrIZhzN4RSJnk99dZ6cjjPr19k6', '0912345678', 'admin', 'active');
+INSERT INTO users (full_name, email, password, phone, role, status, avatar_color) VALUES
+('Administrator', 'admin@carrental.com', '$2b$12$SoaOu.8T0bHtsk55usFZeeKVLiZrIZhzN4RSJnk99dZ6cjjPr19k6', '0912345678', 'admin', 'active', '#dc2626');
 
--- Sample customer (password: customer123)
-INSERT INTO users (full_name, email, password, phone, role, status) VALUES
-('Test Customer', 'customer@test.com', '$2b$12$MMSr3.GOLuKypuTe4eUch.guYKYYm4IdhVzy6lmt4l/.5w240F3cG', '0912345679', 'customer', 'active');
+-- Sample customers (password: customer123)
+INSERT INTO users (full_name, email, password, phone, role, status, avatar_color, license_number) VALUES
+('Test Customer', 'customer@test.com', '$2b$12$MMSr3.GOLuKypuTe4eUch.guYKYYm4IdhVzy6lmt4l/.5w240F3cG', '0912345679', 'customer', 'active', '#2563eb', 'DL-2024-00123'),
+('Selam Bekele',  'selam@example.com',  '$2b$12$MMSr3.GOLuKypuTe4eUch.guYKYYm4IdhVzy6lmt4l/.5w240F3cG', '091112233',  'customer', 'active', '#16a34a', 'DL-2024-00456'),
+('Dawit Haile',   'dawit@example.com',  '$2b$12$MMSr3.GOLuKypuTe4eUch.guYKYYm4IdhVzy6lmt4l/.5w240F3cG', '092233445',  'customer', 'active', '#f59e0b', 'DL-2024-00789');
 
 -- Sample cars
-INSERT INTO cars (name, brand, type, fuel_type, transmission, seats, price_per_day, description, status) VALUES
-('Toyota Camry',    'Toyota',  'Sedan',    'Petrol',   'Automatic', 5, 2500.00, 'Comfortable sedan with AC, Bluetooth, and GPS navigation.', 'available'),
-('Toyota V8',       'Toyota',  'SUV',      'Petrol',   'Automatic', 7, 5000.00, 'Powerful SUV, perfect for off-road and long trips.', 'available'),
-('Honda Civic',     'Honda',   'Sedan',    'Petrol',   'Automatic', 5, 2200.00, 'Fuel-efficient sedan with modern safety features.', 'available'),
-('Isuzu D-Max',     'Isuzu',   'Pickup',   'Diesel',   'Manual',    5, 3500.00, 'Heavy-duty pickup truck for cargo and tough terrain.', 'available'),
-('Toyota Hiace',    'Toyota',  'Van',      'Diesel',   'Manual',    12, 4000.00, 'Spacious van for group travel and tours.', 'available'),
-('Lexus RX 350',    'Lexus',   'Luxury',   'Hybrid',   'Automatic', 5, 8000.00, 'Premium luxury SUV with leather seats and panoramic roof.', 'available'),
-('BYD Atto 3',      'BYD',     'Electric', 'Electric', 'Automatic', 5, 3000.00, 'Fully electric SUV with 400km range and fast charging.', 'available'),
-('Suzuki Swift',    'Suzuki',  'Hatchback','Petrol',   'Manual',    5, 1800.00, 'Compact and economical hatchback for city driving.', 'available');
+INSERT INTO cars (name, brand, type, fuel_type, transmission, seats, doors, luggage, air_conditioning, bluetooth, price_per_day, description, status, featured) VALUES
+('Toyota Camry',    'Toyota',  'Sedan',    'Petrol',   'Automatic', 5, 4, 2, 1, 1, 2500.00, 'Comfortable sedan with AC, Bluetooth, GPS navigation, and premium leather seats. Perfect for business trips and city driving.', 'available', 1),
+('Toyota V8',       'Toyota',  'SUV',      'Petrol',   'Automatic', 7, 5, 4, 1, 1, 5000.00, 'Powerful SUV with 4WD capability, perfect for off-road adventures and long-distance trips across Ethiopia.', 'rented', 1),
+('Honda Civic',     'Honda',   'Sedan',    'Petrol',   'Automatic', 5, 4, 2, 1, 1, 2200.00, 'Fuel-efficient sedan with modern safety features, lane assist, and adaptive cruise control.', 'available', 0),
+('Isuzu D-Max',     'Isuzu',   'Pickup',   'Diesel',   'Manual',    5, 4, 3, 1, 0, 3500.00, 'Heavy-duty pickup truck for cargo transport and tough terrain. High load capacity and durable build.', 'available', 0),
+('Toyota Hiace',    'Toyota',  'Van',      'Diesel',   'Manual',    12, 4, 5, 1, 0, 4000.00, 'Spacious 12-seater van ideal for group travel, tours, and airport transfers.', 'available', 0),
+('Lexus RX 350',    'Lexus',   'Luxury',   'Hybrid',   'Automatic', 5, 4, 3, 1, 1, 8000.00, 'Premium luxury SUV with leather seats, panoramic roof, premium sound system, and advanced driver assistance.', 'available', 1),
+('BYD Atto 3',      'BYD',     'Electric', 'Electric', 'Automatic', 5, 4, 2, 1, 1, 3000.00, 'Fully electric SUV with 400km range, fast charging, regenerative braking, and zero emissions.', 'available', 1),
+('Suzuki Swift',    'Suzuki',  'Hatchback','Petrol',   'Manual',    5, 4, 1, 1, 1, 1800.00, 'Compact and economical hatchback, perfect for city driving and tight parking spaces.', 'available', 0);
 
--- Sample GPS data (Addis Ababa coordinates)
-INSERT INTO gps_logs (car_id, latitude, longitude, speed, device_id) VALUES
-(1, 9.0085, 38.7575, 0.00, 'GPS-001'),
-(2, 9.0320, 38.7420, 45.50, 'GPS-002'),
-(3, 9.0150, 38.7800, 0.00, 'GPS-003');
+-- Sample bookings
+INSERT INTO bookings (user_id, car_id, start_date, end_date, pickup_location, total_cost, status) VALUES
+(2, 2, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 DAY), 'Bole Airport, Addis Ababa', 15000.00, 'active'),
+(3, 1, DATE_ADD(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 5 DAY), 'Megenagna', 7500.00, 'confirmed'),
+(4, 6, DATE_ADD(CURDATE(), INTERVAL 7 DAY), DATE_ADD(CURDATE(), INTERVAL 10 DAY), 'Bole Airport', 24000.00, 'pending');
+
+-- Sample payment
+INSERT INTO payments (booking_id, amount, payment_method, transaction_id, status) VALUES
+(1, 15000.00, 'telebirr', 'TXN20261122001AABB', 'paid'),
+(2, 7500.00, 'cash', 'TXN20261122002CCDD', 'paid');
+
+-- Sample reviews
+INSERT INTO reviews (user_id, car_id, booking_id, rating, comment) VALUES
+(3, 1, NULL, 5, 'Excellent car! Very comfortable and fuel efficient. The GPS tracking feature gave me peace of mind during my trip.'),
+(4, 6, NULL, 5, 'Luxury at its finest. The Lexus was immaculate and the service was outstanding.'),
+(2, 2, NULL, 4, 'Great SUV for our family trip to Bahir Dar. Spacious and powerful.');
+
+-- Sample GPS data (Addis Ababa — multiple points for trail history)
+INSERT INTO gps_logs (car_id, latitude, longitude, speed, heading, device_id, recorded_at) VALUES
+-- Car 2 (Toyota V8 — currently rented, moving)
+(2, 9.0085,  38.7575, 0.00,   0,   'GPS-002', DATE_SUB(NOW(), INTERVAL 120 SECOND)),
+(2, 9.0120,  38.7600, 35.50,  45,  'GPS-002', DATE_SUB(NOW(), INTERVAL 90 SECOND)),
+(2, 9.0180,  38.7630, 52.00,  60,  'GPS-002', DATE_SUB(NOW(), INTERVAL 60 SECOND)),
+(2, 9.0220,  38.7680, 48.00,  75,  'GPS-002', DATE_SUB(NOW(), INTERVAL 30 SECOND)),
+(2, 9.0250,  38.7720, 40.00,  80,  'GPS-002', NOW()),
+-- Car 1 (Toyota Camry — parked)
+(1, 9.0340,  38.7450, 0.00,   0,   'GPS-001', DATE_SUB(NOW(), INTERVAL 300 SECOND)),
+(1, 9.0340,  38.7450, 0.00,   0,   'GPS-001', NOW()),
+-- Car 6 (Lexus — parked)
+(6, 9.0400,  38.7900, 0.00,   0,   'GPS-006', NOW()),
+-- Car 7 (BYD — moving slowly)
+(7, 9.0100,  38.7300, 25.00,  180, 'GPS-007', DATE_SUB(NOW(), INTERVAL 60 SECOND)),
+(7, 9.0080,  38.7310, 22.00,  190, 'GPS-007', DATE_SUB(NOW(), INTERVAL 30 SECOND)),
+(7, 9.0060,  38.7320, 20.00,  195, 'GPS-007', NOW());
+
+-- Sample notifications
+INSERT INTO notifications (user_id, title, message, type) VALUES
+(1, 'New Booking', 'Booking #3 pending confirmation for Lexus RX 350.', 'booking'),
+(1, 'Payment Received', 'Payment of ETB 15,000.00 received for booking #1 (Toyota V8).', 'payment'),
+(2, 'Rental Active', 'Your booking #1 for Toyota V8 is now active. Vehicle handed over.', 'booking'),
+(3, 'Booking Confirmed', 'Your booking #2 for Toyota Camry has been confirmed.', 'booking');

@@ -5,15 +5,21 @@ requireAdmin();
 
 $carId = (int)($_GET['id'] ?? 0);
 
-// Check no active bookings
+// Check for active bookings
 $stmt = db()->prepare('SELECT COUNT(*) FROM bookings WHERE car_id = ? AND status IN ("pending","confirmed","active")');
 $stmt->execute([$carId]);
-if ((int)$stmt->fetchColumn() > 0) {
-    echo '<div class="alert alert-danger">Cannot delete: this vehicle has active bookings. Cancel them first.</div>';
-    echo '<p><a href="' . APP_URL . '/admin/cars.php" class="btn btn-primary">Back</a></p>';
-    include __DIR__ . '/../includes/footer.php';
-    exit;
+$activeBookings = (int)$stmt->fetchColumn();
+
+if ($activeBookings > 0) {
+    // Can't delete, redirect with error
+    redirect('cars.php?error=active_bookings');
 }
 
+// Delete the car
 db()->prepare('DELETE FROM cars WHERE id = ?')->execute([$carId]);
-redirect('admin/cars.php');
+
+// Also clean up related data
+db()->prepare('DELETE FROM reviews WHERE car_id = ?')->execute([$carId]);
+db()->prepare('DELETE FROM gps_logs WHERE car_id = ?')->execute([$carId]);
+
+redirect('cars.php');

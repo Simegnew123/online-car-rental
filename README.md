@@ -1,144 +1,163 @@
 # Online Car Rental Management System with GPS Tracking
 
-A complete web-based car rental management system with real-time GPS fleet tracking.
-
-## Tech Stack
-- **Backend:** PHP 8+ (PDO)
-- **Database:** MySQL / MariaDB
-- **Frontend:** HTML5, CSS3, JavaScript
-- **Maps:** Leaflet.js + OpenStreetMap
-- **Icons:** Font Awesome
+A full-featured car rental management system built with PHP & MySQL, featuring real-time GPS tracking, PWA support, and a professional admin dashboard.
 
 ## Features
 
-### Customer
-- Register / Login
-- Browse available vehicles with filters (type, fuel, price)
-- View vehicle details and reviews
-- Book a vehicle (date range, availability check)
-- Pay for bookings (receipt generation)
-- View booking history
-- Cancel bookings
-- Manage profile (name, phone, license)
-- Contact / feedback form
+### Customer Features
+- **Browse & Search Vehicles** — Filter by type, fuel, price range, and keyword search
+- **Online Booking** — Pick dates, see live price calculation, book in minutes
+- **Multiple Payment Options** — Telebirr, Credit Card, Bank Transfer, Cash on Pickup
+- **Real-Time GPS Tracking** — Track your rented vehicle on an interactive map
+- **Reviews & Ratings** — Rate vehicles and read customer reviews
+- **Booking Management** — View booking history, cancel pending bookings
+- **Notifications** — Get notified about booking status, payments, and more
+- **Profile Management** — Update profile info, change password
+- **PWA Support** — Install as a mobile app, works offline
 
-### Admin
-- Dashboard with summary statistics
-- Manage vehicles (add, edit, delete)
-- Manage bookings (confirm, activate, complete, cancel)
-- Manage users (suspend, activate)
-- GPS fleet tracking (live map, auto-refresh)
-- Reports & analytics (revenue, top vehicles, utilization)
+### Admin Features
+- **Dashboard** — Overview with stats, charts (revenue, bookings), recent activity
+- **Vehicle Management** — Add, edit, delete vehicles with image upload
+- **Booking Lifecycle** — Confirm → Start Rental → Complete (full status flow)
+- **User Management** — Promote/demote admins, delete users
+- **GPS Fleet Tracking** — Real-time map with 5-second auto-refresh, vehicle sidebar, GPS trail
+- **GPS Simulator** — Generate test GPS movement data for active rentals
+- **Reports & Analytics** — Revenue trends, booking trends, vehicle type distribution, top performers
 
-### GPS Tracking
-- API endpoint for devices to post GPS coordinates (`api/gps_update.php`)
-- API endpoint to retrieve latest vehicle locations (`api/get_location.php`)
-- Admin map shows all vehicle positions in real-time
-- Auto-refreshes every 30 seconds
+### Technical Features
+- **PWA** — manifest.json, service worker, installable on mobile
+- **Real-Time GPS** — Leaflet + OpenStreetMap, 5-second auto-refresh, GPS trail polylines
+- **Chart.js** — Revenue, bookings, and analytics charts
+- **Responsive Design** — Mobile-first, hamburger menu, adaptive layouts
+- **Secure Auth** — bcrypt password hashing, session-based authentication
+- **API Layer** — RESTful endpoints for GPS data, notifications
+- **Clean Code** — MVC-ish structure, helper functions, template system
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Backend | PHP 8+ |
+| Database | MySQL 5.7+ / MariaDB |
+| Maps | Leaflet.js + OpenStreetMap |
+| Charts | Chart.js 4 |
+| PWA | Service Worker + Web Manifest |
+| Auth | PHP Sessions + bcrypt |
 
 ## Installation
 
-### 1. Prerequisites
-- XAMPP, WAMP, or LAMP stack (PHP 8+, MySQL)
-- Web browser
+### Prerequisites
+- PHP 8.0 or higher
+- MySQL 5.7 or higher (or MariaDB)
+- Web server (Apache/Nginx) or XAMPP/WAMP
 
-### 2. Setup Database
-1. Start Apache and MySQL from XAMPP control panel
-2. Open `http://localhost/phpmyadmin`
-3. Create a new database named `car_rental_db`
-4. Import `database.sql` to create all tables and seed sample data
+### Steps
 
-### 3. Copy Project
-Copy the `online-car-rental` folder to your web root:
-- XAMPP: `C:\xampp\htdocs\online-car-rental`
-- WAMP:  `C:\wamp64\www\online-car-rental`
+1. **Copy the project** to your web server document root:
+   ```
+   htdocs/online-car-rental/   (XAMPP)
+   www/online-car-rental/       (WAMP)
+   ```
 
-### 4. Configure Database
-Edit `config/database.php` if your MySQL credentials differ:
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'car_rental_db');
-define('DB_USER', 'root');
-define('DB_PASS', '');       // default XAMPP has no password
-```
+2. **Create the database**:
+   ```sql
+   CREATE DATABASE car_rental_db;
+   ```
+   Then import `database.sql`:
+   ```bash
+   mysql -u root -p car_rental_db < database.sql
+   ```
 
-### 5. Create Upload Directories
-Ensure these directories exist and are writable:
-```
-uploads/cars/
-uploads/licenses/
-```
+3. **Configure database connection** (if needed):
+   Edit `config/database.php` — default is localhost, root, no password.
 
-### 6. Access the Application
-Open browser: **http://localhost/online-car-rental**
+4. **Set up upload directories**:
+   ```
+   mkdir uploads/cars uploads/licenses
+   chmod 777 uploads uploads/cars uploads/licenses
+   ```
 
-**Default Admin Login:**
-- Email: `admin@carrental.com`
-- Password: `admin123`
+5. **Visit the site**:
+   ```
+   http://localhost/online-car-rental/
+   ```
 
-**Sample Customer:**
-- Email: `customer@test.com`
-- Password: `customer123`
+## Demo Accounts
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@carrental.com | admin123 |
+| Customer | customer@test.com | customer123 |
 
 ## Project Structure
+
 ```
 online-car-rental/
-  config/
-    database.php          Database connection (PDO)
-  includes/
-    auth.php              Authentication functions
-    functions.php         Utility functions
-    header.php            HTML head + navigation
-    footer.php            HTML footer
-  assets/
-    css/style.css         Main stylesheet
-    js/main.js            JavaScript (GPS map, validation)
-  admin/
-    dashboard.php         Admin overview
-    cars.php              Vehicle list
-    add_car.php           Add vehicle
-    edit_car.php          Edit vehicle
-    delete_car.php        Delete vehicle
-    bookings.php          Booking management
-    users.php             User management
-    gps_tracking.php      Live GPS map
-    reports.php           Analytics
-  api/
-    gps_update.php        POST GPS coordinates from devices
-    get_location.php      GET latest vehicle locations
-  uploads/
-    cars/                 Vehicle images
-    licenses/             License images
-  database.sql            Database schema + seed data
-  index.php               Home page
-  login.php               Login
-  register.php            Registration
-  logout.php              Logout
-  cars.php                Vehicle listing
-  car_details.php         Vehicle detail + reviews
-  book.php                Booking page
-  my_bookings.php         Booking history
-  payment.php             Payment page
-  cancel_booking.php      Cancel booking
-  profile.php             User profile
-  contact.php             Contact form
-  README.md               This file
+├── config/
+│   └── database.php          # PDO database connection
+├── includes/
+│   ├── auth.php              # Authentication functions
+│   ├── functions.php         # Utility & helper functions
+│   ├── header.php            # HTML header template (nav, PWA, notifications)
+│   └── footer.php            # HTML footer template
+├── assets/
+│   ├── css/style.css         # Professional stylesheet (v2.0)
+│   ├── js/main.js            # GPS tracking, notifications, UI logic
+│   └── img/                  # PWA icons, favicon
+├── admin/
+│   ├── dashboard.php         # Admin overview with charts
+│   ├── cars.php              # Vehicle list management
+│   ├── add_car.php           # Add new vehicle
+│   ├── edit_car.php          # Edit vehicle
+│   ├── delete_car.php        # Delete vehicle
+│   ├── bookings.php          # Booking lifecycle management
+│   ├── users.php             # User management
+│   ├── gps_tracking.php      # Real-time GPS fleet tracking
+│   └── reports.php           # Analytics & reports
+├── api/
+│   ├── gps_update.php        # POST: receive GPS data from devices
+│   ├── get_location.php      # GET: return car locations + trails
+│   ├── gps_simulator.php     # POST: generate test GPS movement
+│   ├── get_notifications.php # GET: fetch user notifications
+│   └── mark_read.php         # GET: mark notification as read
+├── index.php                 # Homepage (hero, features, featured cars)
+├── cars.php                  # Vehicle listing with filters
+├── car_details.php           # Vehicle details + reviews
+├── book.php                  # Booking form with live price calc
+├── payment.php               # Payment method selection
+├── my_bookings.php           # Customer booking history
+├── cancel_booking.php        # Cancel pending booking
+├── notifications.php         # Full notifications page
+├── profile.php               # Profile settings + password change
+├── contact.php               # Contact form
+├── login.php / register.php  # Authentication pages
+├── logout.php                # Logout handler
+├── database.sql              # MySQL schema + seed data
+├── manifest.json             # PWA manifest
+├── sw.js                     # Service worker
+└── README.md                 # This file
 ```
 
-## GPS Device Integration
+## GPS Tracking Setup
 
-To send GPS data from a tracking device to the system:
+The GPS tracking feature uses a simple API:
 
-```bash
-curl -X POST http://localhost/online-car-rental/api/gps_update.php \
-  -H "Content-Type: application/json" \
-  -d '{"car_id":1,"device_id":"GPS-001","latitude":9.0085,"longitude":38.7575,"speed":45,"heading":180}'
-```
+1. **Devices send data** to `api/gps_update.php` via POST:
+   ```
+   Header: X-API-Key: gps_tracker_key_2024
+   Body: { "car_id": 1, "latitude": 9.025, "longitude": 38.747, "speed": 45, "heading": 180 }
+   ```
+
+2. **Admin views live tracking** at `admin/gps_tracking.php` — auto-refreshes every 5 seconds
+
+3. **GPS Simulator**: Click "Simulate Movement" on the tracking page to generate test data
 
 ## License
-This project is developed for academic purposes at Admas University, Kality Campus.
 
-## Authors
+This project is for educational purposes as part of a graduation project at Admas University.
+
+## Team
+
 - Nardos Gizaw
 - Saladin Negash
 - Genet Tadele

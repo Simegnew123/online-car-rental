@@ -10,17 +10,21 @@ $stmt = db()->prepare('SELECT * FROM bookings WHERE id = ? AND user_id = ?');
 $stmt->execute([$bookingId, $_SESSION['user_id']]);
 $booking = $stmt->fetch();
 
-if ($booking && in_array($booking['status'], ['pending', 'confirmed'])) {
-    // Cancel booking
-    db()->prepare('UPDATE bookings SET status = "cancelled" WHERE id = ?')->execute([$bookingId]);
+if (!$booking) {
+    redirect('my_bookings.php');
+}
+
+if ($booking['status'] === 'pending' || $booking['status'] === 'confirmed') {
+    // Update booking
+    db()->prepare('UPDATE bookings SET status = "cancelled" WHERE id = ?')
+        ->execute([$bookingId]);
 
     // Make car available again
-    db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')->execute([$booking['car_id']]);
+    db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')
+        ->execute([$booking['car_id']]);
 
-    // Refund payment if exists
-    db()->prepare('UPDATE payments SET status = "refunded" WHERE booking_id = ?')->execute([$bookingId]);
-
-    notify($_SESSION['user_id'], 'Booking Cancelled', 'Booking #' . $bookingId . ' has been cancelled.', 'booking');
+    notify($_SESSION['user_id'], 'Booking Cancelled', 'Your booking #' . $bookingId . ' has been cancelled.', 'booking');
+    notify(1, 'Booking Cancelled', 'Customer cancelled booking #' . $bookingId, 'booking');
 }
 
 redirect('my_bookings.php');

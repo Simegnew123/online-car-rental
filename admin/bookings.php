@@ -4,92 +4,121 @@ require_once __DIR__ . '/../includes/functions.php';
 requireAdmin();
 
 // Handle status update
-if (isset($_GET['action']) && isset($_GET['id'])) {
-    $bookingId = (int)$_GET['id'];
-    $action    = $_GET['action'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST['action'])) {
+    $bookingId = (int)$_POST['booking_id'];
+    $action    = $_POST['action'];
 
-    $stmt = db()->prepare('SELECT * FROM bookings WHERE id = ?');
+    $stmt = db()->prepare('SELECT b.*, c.name AS car_name, u.full_name AS customer FROM bookings b JOIN cars c ON b.car_id = c.id JOIN users u ON b.user_id = u.id WHERE b.id = ?');
     $stmt->execute([$bookingId]);
-    $booking = $stmt->fetch();
+    $b = $stmt->fetch();
 
-    if ($booking) {
+    if ($b) {
         switch ($action) {
             case 'confirm':
                 db()->prepare('UPDATE bookings SET status = "confirmed" WHERE id = ?')->execute([$bookingId]);
-                notify($booking['user_id'], 'Booking Confirmed', 'Booking #' . $bookingId . ' has been confirmed.', 'booking');
+                db()->prepare('UPDATE cars SET status = "rented" WHERE id = ?')->execute([$b['car_id']]);
+                notify($b['user_id'], 'Booking Confirmed', 'Your booking #' . $bookingId . ' for ' . $b['car_name'] . ' is confirmed!', 'booking');
                 break;
-            case 'activate':
+            case 'start':
                 db()->prepare('UPDATE bookings SET status = "active" WHERE id = ?')->execute([$bookingId]);
-                db()->prepare('UPDATE cars SET status = "rented" WHERE id = ?')->execute([$booking['car_id']]);
-                notify($booking['user_id'], 'Rental Active', 'Booking #' . $bookingId . ' is now active. Vehicle handed over.', 'booking');
+                db()->prepare('UPDATE cars SET status = "rented" WHERE id = ?')->execute([$b['car_id']]);
+                notify($b['user_id'], 'Rental Started', 'Your rental for ' . $b['car_name'] . ' has started. Track it on the map!', 'gps');
                 break;
             case 'complete':
                 db()->prepare('UPDATE bookings SET status = "completed" WHERE id = ?')->execute([$bookingId]);
-                db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')->execute([$booking['car_id']]);
-                notify($booking['user_id'], 'Rental Completed', 'Booking #' . $bookingId . ' completed. Vehicle returned.', 'booking');
+                db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')->execute([$b['car_id']]);
+                notify($b['user_id'], 'Rental Completed', 'Your rental for ' . $b['car_name'] . ' is complete. Please leave a review!', 'booking');
                 break;
             case 'cancel':
                 db()->prepare('UPDATE bookings SET status = "cancelled" WHERE id = ?')->execute([$bookingId]);
-                db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')->execute([$booking['car_id']]);
-                db()->prepare('UPDATE payments SET status = "refunded" WHERE booking_id = ?')->execute([$bookingId]);
-                notify($booking['user_id'], 'Booking Cancelled', 'Booking #' . $bookingId . ' has been cancelled by admin.', 'booking');
+                db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')->execute([$b['car_id']]);
+                notify($b['user_id'], 'Booking Cancelled', 'Your booking #' . $bookingId . ' has been cancelled by admin.', 'booking');
                 break;
         }
     }
-    redirect('admin/bookings.php');
+    redirect('bookings.php');
 }
 
-// Fetch all bookings
-$stmt = db()->prepare(
-    'SELECT b.*, c.name AS car_name, u.full_name AS customer_name, u.email AS customer_email
-     FROM bookings b
-     JOIN cars c  ON b.car_id  = c.id
-     JOIN users u ON b.user_id = u.id
-     ORDER BY b.created_at DESC'
-);
-$stmt->execute();
-$bookings = $stmt->fetchAll();
+// Fetch all bookings with filters
+$statusFilter = $_GET['status'] ?? '';
+$sql = 'SELECT b.*, c.name AS car_name, u.full_name AS customer_name, u.email AS customer_email
+        FROM bookings b
+        JOIN cars c ON b.car_id = c.id
+        JOIN users u ON b.user_id = u.id';
+if ($statusFilter) {
+    $sql .= ' WHERE b.status = ' . db()->quote($statusFilter);
+}
+$sql .= ' ORDER BY b.created_at DESC';
+$bookings = db()->query($sql)->fetchAll();
 
 $page_title = 'Manage Bookings';
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<h2 class="page-title">Manage Bookings</h2>
+<div class="section-header">
+    <h2 class="page-title" style="margin-bottom:0;">Manage Bookings</h2>
+    <div class="d-flex">
+        <a href="<?= APP_URL ?>/admin/bookings.php" class="btn btn-outline btn-sm <?= !$statusFilter?'active':'' ?>">All</a>
+        <?php foreach (['pending','confirmed','active','completed','cancelled'] as $s): ?>
+            <a href="?status=<?= $s ?>" class="btn btn-outline btn-sm <?= $statusFilter===$s?'active':'' ?>"><?= ucfirst($s) ?></a>
+        <?php endforeach; ?>
+    </div>
+</div>
 
 <div class="table-card">
     <table>
         <thead>
-            <tr>
-                <th>#</th>
-                <th>Customer</th>
-                <th>Vehicle</th>
-                <th>Period</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+            <tr><th>#</th><th>Customer</th><th>Vehicle</th><th>Period</th><th>Total</th><th>Status</th><th>Actions</th></tr>
         </thead>
         <tbody>
-            <?php foreach ($bookings as $b): ?>
-            <tr>
-                <td><?= $b['id'] ?></td>
-                <td><?= e($b['customer_name']) ?><br><small><?= e($b['customer_email']) ?></small></td>
-                <td><?= e($b['car_name']) ?></td>
-                <td><?= formatDate($b['start_date']) ?><br>&rarr; <?= formatDate($b['end_date']) ?></td>
-                <td><?= money($b['total_cost']) ?></td>
-                <td><span class="badge <?= $b['status']==='completed'?'available':($b['status']==='cancelled'?'unavailable':'rented') ?>"><?= $b['status'] ?></span></td>
-                <td class="d-flex flex-wrap">
-                    <?php if ($b['status'] === 'pending'): ?>
-                        <a href="?action=confirm&id=<?= $b['id'] ?>" class="btn btn-success btn-sm">Confirm</a>
-                        <a href="?action=cancel&id=<?= $b['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirmAction('Cancel this booking?')">Cancel</a>
-                    <?php elseif ($b['status'] === 'confirmed'): ?>
-                        <a href="?action=activate&id=<?= $b['id'] ?>" class="btn btn-primary btn-sm">Activate</a>
-                    <?php elseif ($b['status'] === 'active'): ?>
-                        <a href="?action=complete&id=<?= $b['id'] ?>" class="btn btn-success btn-sm">Complete</a>
-                    <?php endif; ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if (empty($bookings)): ?>
+                <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--gray);">No bookings found</td></tr>
+            <?php else: ?>
+                <?php foreach ($bookings as $b): ?>
+                <tr>
+                    <td><?= $b['id'] ?></td>
+                    <td>
+                        <strong><?= e($b['customer_name']) ?></strong><br>
+                        <small style="color:var(--gray);"><?= e($b['customer_email']) ?></small>
+                    </td>
+                    <td><?= e($b['car_name']) ?></td>
+                    <td><?= formatDate($b['start_date']) ?><br><small><?= formatDate($b['end_date']) ?></small></td>
+                    <td><?= money($b['total_cost']) ?></td>
+                    <td><span class="badge <?= $b['status'] ?>"><?= $b['status'] ?></span></td>
+                    <td>
+                        <div class="d-flex" style="gap:4px;">
+                            <?php if ($b['status'] === 'pending'): ?>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="booking_id" value="<?= $b['id'] ?>">
+                                    <input type="hidden" name="action" value="confirm">
+                                    <button type="submit" class="btn btn-success btn-sm">Confirm</button>
+                                </form>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="booking_id" value="<?= $b['id'] ?>">
+                                    <input type="hidden" name="action" value="cancel">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Cancel this booking?')">Cancel</button>
+                                </form>
+                            <?php elseif ($b['status'] === 'confirmed'): ?>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="booking_id" value="<?= $b['id'] ?>">
+                                    <input type="hidden" name="action" value="start">
+                                    <button type="submit" class="btn btn-primary btn-sm">Start Rental</button>
+                                </form>
+                            <?php elseif ($b['status'] === 'active'): ?>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="booking_id" value="<?= $b['id'] ?>">
+                                    <input type="hidden" name="action" value="complete">
+                                    <button type="submit" class="btn btn-success btn-sm">Complete</button>
+                                </form>
+                                <a href="<?= APP_URL ?>/admin/gps_tracking.php" class="btn btn-outline btn-sm">Track</a>
+                            <?php else: ?>
+                                <span style="color:var(--gray);">-</span>
+                            <?php endif; ?>
+                        </div>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
