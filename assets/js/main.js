@@ -354,6 +354,45 @@ document.addEventListener('click', function(e) {
 });
 
 // =====================================================
+// PWA INSTALL PROMPT
+// =====================================================
+var deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallButton();
+});
+
+function showInstallButton() {
+    var existing = document.getElementById('pwa-install-btn');
+    if (existing) return;
+
+    var btn = document.createElement('button');
+    btn.id = 'pwa-install-btn';
+    btn.innerHTML = '&#128229; Install App';
+    btn.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;background:#2563eb;color:#fff;border:none;padding:12px 20px;border-radius:8px;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-family:sans-serif;';
+    btn.onclick = function() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(choice) {
+            if (choice.outcome === 'accepted') {
+                console.log('PWA installed');
+            }
+            deferredPrompt = null;
+            btn.remove();
+        });
+    };
+    document.body.appendChild(btn);
+}
+
+// Detect if already installed
+window.addEventListener('appinstalled', function() {
+    var btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.remove();
+});
+
+// =====================================================
 // SERVICE WORKER REGISTRATION
 // =====================================================
 if ('serviceWorker' in navigator) {

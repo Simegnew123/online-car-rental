@@ -11,33 +11,55 @@
   "categories": ["travel", "business", "navigation"],
   "icons": [
     {
+      "src": "assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "assets/img/icon-192.svg",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/svg+xml"
     },
     {
       "src": "assets/img/icon-512.svg",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/svg+xml"
     }
   ],
   "shortcuts": [
     {
       "name": "Browse Vehicles",
       "url": "/online-car-rental/cars.php",
-      "icons": [{ "src": "assets/img/icon-192.svg", "sizes": "192x192" }]
+      "icons": [{ "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "My Bookings",
       "url": "/online-car-rental/my_bookings.php",
-      "icons": [{ "src": "assets/img/icon-192.svg", "sizes": "192x192" }]
+      "icons": [{ "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "GPS Tracking",
       "url": "/online-car-rental/admin/gps_tracking.php",
-      "icons": [{ "src": "assets/img/icon-192.svg", "sizes": "192x192" }]
+      "icons": [{ "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }

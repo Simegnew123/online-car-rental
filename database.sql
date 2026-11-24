@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     end_date        DATE           NOT NULL,
     pickup_location VARCHAR(200)   DEFAULT NULL,
     total_cost      DECIMAL(10,2)  NOT NULL,
+    notes           TEXT           DEFAULT NULL,
     status          ENUM('pending','confirmed','active','completed','cancelled') DEFAULT 'pending',
     created_at      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
