@@ -23,6 +23,11 @@
                 Department of Computer Science
             </p>
         </div>
+        <div class="footer-qr">
+            <h4>&#128241; Open on Mobile</h4>
+            <img src="<?= APP_URL ?>/assets/img/mobile-qr.png" alt="Scan to open on mobile" width="100" height="100">
+            <p>Scan with your phone camera</p>
+        </div>
     </div>
     <div class="footer-bottom">
         <p>&copy; <?= date('Y') ?> Online Car Rental Management System with GPS Tracking</p>
