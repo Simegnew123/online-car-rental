@@ -17,7 +17,7 @@ include __DIR__ . '/../includes/header.php';
 <div class="table-card">
     <table>
         <thead>
-            <tr><th>ID</th><th>Vehicle</th><th>Type</th><th>Price/Day</th><th>Status</th><th>Featured</th><th>Actions</th></tr>
+            <tr><th>ID</th><th>Vehicle</th><th>Plate</th><th>Type</th><th>Price/Day</th><th>Status</th><th>Featured</th><th>Actions</th></tr>
         </thead>
         <tbody>
             <?php foreach ($cars as $c): ?>
@@ -27,6 +27,7 @@ include __DIR__ . '/../includes/header.php';
                     <strong><?= e($c['name']) ?></strong><br>
                     <small style="color:var(--gray);"><?= e($c['brand'] ?: '') ?></small>
                 </td>
+                <td><code><?= e($c['plate_number'] ?: '—') ?></code></td>
                 <td><?= e($c['type']) ?></td>
                 <td><?= money($c['price_per_day']) ?></td>
                 <td><span class="badge <?= $c['status'] ?>"><?= $c['status'] ?></span></td>

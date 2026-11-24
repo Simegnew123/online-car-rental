@@ -65,7 +65,7 @@ include __DIR__ . '/includes/header.php';
 
     <!-- Car details -->
     <div>
-        <div class="car-brand" style="font-size:1.1rem;margin-bottom:14px;"><?= e($car['brand'] ?: 'Vehicle') ?> &middot; <?= e($car['type']) ?></div>
+        <div class="car-brand" style="font-size:1.1rem;margin-bottom:14px;"><?= e($car['brand'] ?: 'Vehicle') ?> &middot; <?= e($car['type']) ?><?= $car['plate_number'] ? ' &middot; <code style="background:var(--lighter);padding:2px 8px;border-radius:4px;font-size:.9rem;">' . e($car['plate_number']) . '</code>' : '' ?></div>
         <div class="car-meta" style="margin-bottom:16px;">
             <span>&#9981; <?= e($car['fuel_type']) ?></span>
             <span>&#9881; <?= e($car['transmission']) ?></span>

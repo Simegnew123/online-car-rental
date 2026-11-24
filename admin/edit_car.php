@@ -14,6 +14,7 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name       = trim($_POST['name'] ?? '');
+    $plate      = trim($_POST['plate_number'] ?? '');
     $brand      = trim($_POST['brand'] ?? '');
     $type       = $_POST['type'] ?? 'Sedan';
     $fuelType   = $_POST['fuel_type'] ?? 'Petrol';
@@ -33,13 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Vehicle name and price are required.';
     } else {
         $stmt = db()->prepare(
-            'UPDATE cars SET name=?, brand=?, type=?, fuel_type=?, transmission=?,
+            'UPDATE cars SET name=?, plate_number=?, brand=?, type=?, fuel_type=?, transmission=?,
                              seats=?, doors=?, luggage=?, price_per_day=?,
                              air_conditioning=?, bluetooth=?, featured=?, description=?, image=?, status=?
              WHERE id=?'
         );
         $stmt->execute([
-            $name, $brand, $type, $fuelType, $transmission, $seats, $doors, $luggage,
+            $name, $plate, $brand, $type, $fuelType, $transmission, $seats, $doors, $luggage,
             $price, $ac, $bluetooth, $featured, $desc, $image, $status, $carId
         ]);
         redirect('admin/cars.php');
@@ -63,11 +64,15 @@ include __DIR__ . '/../includes/header.php';
                 <input type="text" name="name" required value="<?= e($car['name']) ?>">
             </div>
             <div class="form-group">
-                <label>Brand</label>
-                <input type="text" name="brand" value="<?= e($car['brand']) ?>">
+                <label>Plate Number</label>
+                <input type="text" name="plate_number" value="<?= e($car['plate_number']) ?>" placeholder="e.g. AA 12345">
             </div>
         </div>
         <div class="form-row">
+            <div class="form-group">
+                <label>Brand</label>
+                <input type="text" name="brand" value="<?= e($car['brand']) ?>">
+            </div>
             <div class="form-group">
                 <label>Type</label>
                 <select name="type">
