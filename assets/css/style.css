@@ -254,7 +254,7 @@ a:hover { color: var(--primary-dk); }
 .hero .btn { position: relative; }
 
 /* Hero CTA button — high contrast white on blue */
-.btn-hero {
+.hero .btn-hero {
     background: #ffffff;
     color: #1e40af;
     font-weight: 700;
@@ -262,7 +262,7 @@ a:hover { color: var(--primary-dk); }
     box-shadow: 0 4px 16px rgba(0,0,0,.2);
     padding: 14px 40px;
 }
-.btn-hero:hover {
+.hero .btn-hero:hover {
     background: #fef3c7;
     color: #1e40af;
     border-color: #fef3c7;
@@ -323,7 +323,7 @@ a:hover { color: var(--primary-dk); }
 .car-card-img {
     width: 100%;
     height: 200px;
-    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -359,14 +359,14 @@ a:hover { color: var(--primary-dk); }
     flex-wrap: wrap;
     gap: 8px;
     font-size: .82rem;
-    color: var(--gray);
+    color: #475569;
     margin-bottom: 14px;
 }
 .car-meta span {
     background: var(--light);
     padding: 3px 10px;
     border-radius: 6px;
-    font-weight: 500;
+    font-weight: 600;
 }
 .car-price {
     font-size: 1.35rem;
@@ -515,10 +515,25 @@ textarea { resize: vertical; min-height: 80px; }
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
     margin-bottom: 24px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #cbd5e1;
 }
 .filter-bar .form-group { margin-bottom: 0; min-width: 140px; }
-.filter-bar .form-group label { font-size: .8rem; color: var(--gray); }
+.filter-bar .form-group label { font-size: .8rem; color: var(--dark2); font-weight: 600; }
+/* Make filter inputs darker for readability */
+.filter-bar input::placeholder { color: #64748b; opacity: 1; }
+.filter-bar .form-group input,
+.filter-bar .form-group select {
+    border-color: #94a3b8;
+}
+/* Reset button — visible grey outline */
+.filter-bar .btn-outline {
+    border-color: #64748b;
+    color: #475569;
+}
+.filter-bar .btn-outline:hover {
+    background: #475569;
+    color: #fff;
+}
 
 /* Search */
 .search-box {
