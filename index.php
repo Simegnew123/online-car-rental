@@ -72,4 +72,25 @@ include __DIR__ . '/includes/header.php';
     <div class="alert alert-info">No vehicles currently available. Check back soon!</div>
 <?php endif; ?>
 
+<!-- Scan to Open on Mobile -->
+<section class="qr-section">
+    <div class="qr-card">
+        <div class="qr-text">
+            <h2>Open on Your Phone</h2>
+            <p>Scan this QR code with your mobile camera to open the app on your phone. Book and track your rental on the go!</p>
+            <ul class="qr-features">
+                <li>&#128241; Works on any smartphone</li>
+                <li>&#128205; Real-time GPS tracking</li>
+                <li>&#128179; Book & pay from your phone</li>
+                <li>&#128230; Installable as a web app</li>
+            </ul>
+            <p class="qr-note">Make sure your phone is on the same WiFi network as this computer.</p>
+        </div>
+        <div class="qr-code">
+            <img src="<?= APP_URL ?>/assets/img/mobile-qr.png" alt="Scan to open on mobile" width="200" height="200">
+            <div class="qr-label">Scan Me!</div>
+        </div>
+    </div>
+</section>
+
 <?php include __DIR__ . '/includes/footer.php'; ?>

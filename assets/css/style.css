@@ -1000,4 +1000,82 @@ table tbody tr:last-child { border-bottom: none; }
     .stats-grid { grid-template-columns: 1fr 1fr; }
     .hero h1 { font-size: 1.3rem; }
     .hero-stats { flex-wrap: wrap; }
+    .qr-card { flex-direction: column; text-align: center; }
+    .qr-code { margin: 0 auto; }
+}
+
+/* =====================================================
+   QR CODE SECTION
+   ===================================================== */
+.qr-section {
+    margin: 40px 0;
+    padding: 0;
+}
+
+.qr-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 16px;
+    padding: 40px;
+    color: #fff;
+}
+
+.qr-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.qr-text p {
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.qr-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+}
+
+.qr-features li {
+    color: #e2e8f0;
+    padding: 6px 0;
+    font-size: 0.95rem;
+}
+
+.qr-note {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-style: italic;
+    margin: 0;
+}
+
+.qr-code {
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.qr-code img {
+    background: #fff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    width: 200px;
+    height: 200px;
+}
+
+.qr-label {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f59e0b;
+}
+
+@media (max-width: 768px) {
+    .qr-card { flex-direction: column; text-align: center; gap: 24px; padding: 24px; }
+    .qr-code { margin: 0 auto; }
 }
