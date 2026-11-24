@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 300" width="660" height="300">
+  <defs>
+    <linearGradient id="bodyGrad_byd_atto3.svg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d7a3e"/>
+      <stop offset="60%" style="stop-color:#2d7a3e"/>
+      <stop offset="100%" style="stop-color:#1a5028"/>
+    </linearGradient>
+    <linearGradient id="windowGrad_byd_atto3.svg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a0c4e8;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#6b9dc4;stop-opacity:0.7"/>
+    </linearGradient>
+    <radialGradient id="shadowGrad_byd_atto3.svg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:rgba(0,0,0,0.3)"/>
+      <stop offset="100%" style="stop-color:rgba(0,0,0,0)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="660" height="300" fill="#f0f4f8"/>
+
+  <!-- Shadow under car -->
+  <ellipse cx="330" cy="265" rx="260" ry="18" fill="url(#shadowGrad_byd_atto3.svg)"/>
+
+  <!-- Car body -->
+  <path d="M 80 200 Q 80 185 105 178 L 190 172 Q 210 142 250 138 L 410 138 Q 450 142 470 172 L 555 178 Q 580 185 580 200 L 580 230 L 80 230 Z" fill="url(#bodyGrad_byd_atto3.svg)" stroke="#1a5028" stroke-width="2"/>
+
+  <!-- Windows -->
+  <path d="M 220 148 L 250 148 Q 258 153 262 168 L 220 168 Z M 275 148 L 350 148 L 350 168 L 275 168 Z M 365 148 L 440 148 Q 455 153 462 168 L 365 168 Z" fill="url(#windowGrad_byd_atto3.svg)" stroke="#4a6a8a" stroke-width="1.5"/>
+
+  <!-- Window divider lines -->
+  <line x1="260" y1="145" x2="260" y2="165" stroke="#4a6a8a" stroke-width="2"/>
+  <line x1="350" y1="145" x2="350" y2="165" stroke="#4a6a8a" stroke-width="2"/>
+
+  <!-- Door line -->
+  <line x1="330" y1="170" x2="330" y2="225" stroke="#1a5028" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Door handle -->
+  <rect x="305" y="185" width="20" height="4" rx="2" fill="#1a5028" opacity="0.6"/>
+  <rect x="345" y="185" width="20" height="4" rx="2" fill="#1a5028" opacity="0.6"/>
+
+  <!-- Headlight -->
+  <ellipse cx="565" cy="195" rx="12" ry="8" fill="#fef9e7" stroke="#e2c478" stroke-width="1"/>
+  <ellipse cx="565" cy="195" rx="8" ry="5" fill="#fffde7"/>
+
+  <!-- Taillight -->
+  <rect x="82" y="188" width="14" height="14" rx="3" fill="#dc2626" opacity="0.8"/>
+
+  <!-- Side mirror -->
+  <ellipse cx="480" cy="172" rx="6" ry="4" fill="#1a5028"/>
+
+  <!-- Wheels -->
+  
+        <!-- Wheel -->
+        <circle cx="180" cy="235" r="32" fill="#1a1a2e"/>
+        <circle cx="180" cy="235" r="22" fill="#2d2d44"/>
+        <circle cx="180" cy="235" r="14" fill="#4a4a6a"/>
+        <circle cx="180" cy="235" r="6" fill="#1a1a2e"/>
+        <!-- Rim spokes -->
+        <line x1="162" y1="235" x2="198" y2="235" stroke="#3a3a55" stroke-width="3"/>
+        <line x1="180" y1="217" x2="180" y2="253" stroke="#3a3a55" stroke-width="3"/>
+        <line x1="167" y1="222" x2="193" y2="248" stroke="#3a3a55" stroke-width="3"/>
+        <line x1="167" y1="248" x2="193" y2="222" stroke="#3a3a55" stroke-width="3"/>
+        
+        <!-- Wheel -->
+        <circle cx="470" cy="235" r="32" fill="#1a1a2e"/>
+        <circle cx="470" cy="235" r="22" fill="#2d2d44"/>
+        <circle cx="470" cy="235" r="14" fill="#4a4a6a"/>
+        <circle cx="470" cy="235" r="6" fill="#1a1a2e"/>
+        <!-- Rim spokes -->
+        <line x1="452" y1="235" x2="488" y2="235" stroke="#3a3a55" stroke-width="3"/>
+        <line x1="470" y1="217" x2="470" y2="253" stroke="#3a3a55" stroke-width="3"/>
+        <line x1="457" y1="222" x2="483" y2="248" stroke="#3a3a55" stroke-width="3"/>
+        <line x1="457" y1="248" x2="483" y2="222" stroke="#3a3a55" stroke-width="3"/>
+        
+
+  <!-- Ground line -->
+  <line x1="40" y1="270" x2="620" y2="270" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="8,6"/>
+</svg>

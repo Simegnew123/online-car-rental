@@ -143,15 +143,15 @@ INSERT INTO users (full_name, email, password, phone, role, status, avatar_color
 ('Dawit Haile',   'dawit@example.com',  '$2b$12$MMSr3.GOLuKypuTe4eUch.guYKYYm4IdhVzy6lmt4l/.5w240F3cG', '092233445',  'customer', 'active', '#f59e0b', 'DL-2024-00789');
 
 -- Sample cars
-INSERT INTO cars (name, brand, type, fuel_type, transmission, seats, doors, luggage, air_conditioning, bluetooth, price_per_day, description, status, featured) VALUES
-('Toyota Camry',    'Toyota',  'Sedan',    'Petrol',   'Automatic', 5, 4, 2, 1, 1, 2500.00, 'Comfortable sedan with AC, Bluetooth, GPS navigation, and premium leather seats. Perfect for business trips and city driving.', 'available', 1),
-('Toyota V8',       'Toyota',  'SUV',      'Petrol',   'Automatic', 7, 5, 4, 1, 1, 5000.00, 'Powerful SUV with 4WD capability, perfect for off-road adventures and long-distance trips across Ethiopia.', 'rented', 1),
-('Honda Civic',     'Honda',   'Sedan',    'Petrol',   'Automatic', 5, 4, 2, 1, 1, 2200.00, 'Fuel-efficient sedan with modern safety features, lane assist, and adaptive cruise control.', 'available', 0),
-('Isuzu D-Max',     'Isuzu',   'Pickup',   'Diesel',   'Manual',    5, 4, 3, 1, 0, 3500.00, 'Heavy-duty pickup truck for cargo transport and tough terrain. High load capacity and durable build.', 'available', 0),
-('Toyota Hiace',    'Toyota',  'Van',      'Diesel',   'Manual',    12, 4, 5, 1, 0, 4000.00, 'Spacious 12-seater van ideal for group travel, tours, and airport transfers.', 'available', 0),
-('Lexus RX 350',    'Lexus',   'Luxury',   'Hybrid',   'Automatic', 5, 4, 3, 1, 1, 8000.00, 'Premium luxury SUV with leather seats, panoramic roof, premium sound system, and advanced driver assistance.', 'available', 1),
-('BYD Atto 3',      'BYD',     'Electric', 'Electric', 'Automatic', 5, 4, 2, 1, 1, 3000.00, 'Fully electric SUV with 400km range, fast charging, regenerative braking, and zero emissions.', 'available', 1),
-('Suzuki Swift',    'Suzuki',  'Hatchback','Petrol',   'Manual',    5, 4, 1, 1, 1, 1800.00, 'Compact and economical hatchback, perfect for city driving and tight parking spaces.', 'available', 0);
+INSERT INTO cars (name, brand, type, fuel_type, transmission, seats, doors, luggage, air_conditioning, bluetooth, price_per_day, description, status, featured, image) VALUES
+('Toyota Camry',    'Toyota',  'Sedan',    'Petrol',   'Automatic', 5, 4, 2, 1, 1, 2500.00, 'Comfortable sedan with AC, Bluetooth, GPS navigation, and premium leather seats. Perfect for business trips and city driving.', 'available', 1, 'toyota_camry.svg'),
+('Toyota V8',       'Toyota',  'SUV',      'Petrol',   'Automatic', 7, 5, 4, 1, 1, 5000.00, 'Powerful SUV with 4WD capability, perfect for off-road adventures and long-distance trips across Ethiopia.', 'rented', 1, 'toyota_v8.svg'),
+('Honda Civic',     'Honda',   'Sedan',    'Petrol',   'Automatic', 5, 4, 2, 1, 1, 2200.00, 'Fuel-efficient sedan with modern safety features, lane assist, and adaptive cruise control.', 'available', 0, 'honda_civic.svg'),
+('Isuzu D-Max',     'Isuzu',   'Pickup',   'Diesel',   'Manual',    5, 4, 3, 1, 0, 3500.00, 'Heavy-duty pickup truck for cargo transport and tough terrain. High load capacity and durable build.', 'available', 0, 'isuzu_dmax.svg'),
+('Toyota Hiace',    'Toyota',  'Van',      'Diesel',   'Manual',    12, 4, 5, 1, 0, 4000.00, 'Spacious 12-seater van ideal for group travel, tours, and airport transfers.', 'available', 0, 'toyota_hiace.svg'),
+('Lexus RX 350',    'Lexus',   'Luxury',   'Hybrid',   'Automatic', 5, 4, 3, 1, 1, 8000.00, 'Premium luxury SUV with leather seats, panoramic roof, premium sound system, and advanced driver assistance.', 'available', 1, 'lexus_rx350.svg'),
+('BYD Atto 3',      'BYD',     'Electric', 'Electric', 'Automatic', 5, 4, 2, 1, 1, 3000.00, 'Fully electric SUV with 400km range, fast charging, regenerative braking, and zero emissions.', 'available', 1, 'byd_atto3.svg'),
+('Suzuki Swift',    'Suzuki',  'Hatchback','Petrol',   'Manual',    5, 4, 1, 1, 1, 1800.00, 'Compact and economical hatchback, perfect for city driving and tight parking spaces.', 'available', 0, 'suzuki_swift.svg');
 
 -- Sample bookings
 INSERT INTO bookings (user_id, car_id, start_date, end_date, pickup_location, total_cost, status) VALUES

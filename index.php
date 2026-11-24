@@ -3,9 +3,6 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 
 $cars = getCars(['status' => 'available']);
-$totalCars = totalCars();
-$customers = totalCustomers();
-$bookings = totalBookings();
 
 $page_title = 'Home';
 include __DIR__ . '/includes/header.php';
@@ -14,20 +11,20 @@ include __DIR__ . '/includes/header.php';
 <section class="hero">
     <h1>Rent a Car with Real-Time GPS Tracking</h1>
     <p>Book your vehicle online in minutes. Track your rental in real-time. Safe, reliable, and affordable — anywhere in Ethiopia.</p>
-    <a href="<?= APP_URL ?>/cars.php" class="btn btn-warning btn-lg">Browse Vehicles</a>
+    <a href="<?= APP_URL ?>/cars.php" class="btn btn-hero btn-lg">Browse Vehicles</a>
 
-    <div class="hero-stats">
-        <div class="hero-stat">
-            <div class="num"><?= number_format($totalCars) ?>+</div>
-            <div class="label">Vehicles</div>
+    <div class="hero-features">
+        <div class="hero-feature">
+            <span class="hero-feature-icon">&#128205;</span>
+            <span class="hero-feature-text">Real-Time GPS Tracking</span>
         </div>
-        <div class="hero-stat">
-            <div class="num"><?= number_format($customers) ?>+</div>
-            <div class="label">Happy Customers</div>
+        <div class="hero-feature">
+            <span class="hero-feature-icon">&#9889;</span>
+            <span class="hero-feature-text">Instant Online Booking</span>
         </div>
-        <div class="hero-stat">
-            <div class="num"><?= number_format($bookings) ?>+</div>
-            <div class="label">Bookings</div>
+        <div class="hero-feature">
+            <span class="hero-feature-icon">&#128241;</span>
+            <span class="hero-feature-text">24/7 Customer Support</span>
         </div>
     </div>
 </section>
