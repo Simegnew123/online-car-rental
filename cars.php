@@ -16,13 +16,13 @@ include __DIR__ . '/includes/header.php';
 
 <h2 class="page-title">Available Vehicles</h2>
 
-<form method="GET" action="" class="filter-bar">
+<form method="GET" action="" class="filter-bar" id="filterForm">
     <div class="search-box">
-        <input type="text" name="search" value="<?= e($filters['search']) ?>" placeholder="Search by name, brand...">
+        <input type="text" name="search" value="<?= e($filters['search']) ?>" placeholder="Search by name, brand..." oninput="autoFilter()">
     </div>
     <div class="form-group">
         <label>Type</label>
-        <select name="type">
+        <select name="type" onchange="autoFilter()">
             <option value="">All Types</option>
             <?php foreach (['Sedan','SUV','Hatchback','Pickup','Van','Luxury','Electric'] as $t): ?>
                 <option value="<?= $t ?>" <?= $filters['type']===$t ? 'selected' : '' ?>><?= $t ?></option>
@@ -31,7 +31,7 @@ include __DIR__ . '/includes/header.php';
     </div>
     <div class="form-group">
         <label>Fuel</label>
-        <select name="fuel">
+        <select name="fuel" onchange="autoFilter()">
             <option value="">All Fuel</option>
             <?php foreach (['Petrol','Diesel','Hybrid','Electric'] as $f): ?>
                 <option value="<?= $f ?>" <?= $filters['fuel']===$f ? 'selected' : '' ?>><?= $f ?></option>
@@ -40,11 +40,11 @@ include __DIR__ . '/includes/header.php';
     </div>
     <div class="form-group">
         <label>Min Price</label>
-        <input type="number" name="min_price" value="<?= e($filters['min_price']) ?>" placeholder="0">
+        <input type="number" name="min_price" value="<?= e($filters['min_price']) ?>" placeholder="0" oninput="autoFilter()">
     </div>
     <div class="form-group">
         <label>Max Price</label>
-        <input type="number" name="max_price" value="<?= e($filters['max_price']) ?>" placeholder="10000">
+        <input type="number" name="max_price" value="<?= e($filters['max_price']) ?>" placeholder="10000" oninput="autoFilter()">
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Filter</button>
@@ -97,5 +97,15 @@ include __DIR__ . '/includes/header.php';
 </div>
 
 <?php endif; ?>
+
+<script>
+var filterTimer = null;
+function autoFilter() {
+    clearTimeout(filterTimer);
+    filterTimer = setTimeout(function() {
+        document.getElementById('filterForm').submit();
+    }, 500);
+}
+</script>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
