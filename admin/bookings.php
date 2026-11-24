@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/mail.php';
 requireAdmin();
 
 // Handle status update
@@ -18,25 +19,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST[
                 db()->prepare('UPDATE bookings SET status = "confirmed" WHERE id = ?')->execute([$bookingId]);
                 db()->prepare('UPDATE cars SET status = "rented" WHERE id = ?')->execute([$b['car_id']]);
                 notify($b['user_id'], 'Booking Confirmed', 'Your booking #' . $bookingId . ' for ' . $b['car_name'] . ' is confirmed!', 'booking');
+                emailBookingConfirmation($bookingId);
                 break;
             case 'start':
                 db()->prepare('UPDATE bookings SET status = "active" WHERE id = ?')->execute([$bookingId]);
                 db()->prepare('UPDATE cars SET status = "rented" WHERE id = ?')->execute([$b['car_id']]);
                 notify($b['user_id'], 'Rental Started', 'Your rental for ' . $b['car_name'] . ' has started. Track it on the map!', 'gps');
+                emailRentalStarted($bookingId);
                 break;
             case 'complete':
                 db()->prepare('UPDATE bookings SET status = "completed" WHERE id = ?')->execute([$bookingId]);
                 db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')->execute([$b['car_id']]);
                 notify($b['user_id'], 'Rental Completed', 'Your rental for ' . $b['car_name'] . ' is complete. Please leave a review!', 'booking');
+                emailRentalCompleted($bookingId);
                 break;
             case 'cancel':
                 db()->prepare('UPDATE bookings SET status = "cancelled" WHERE id = ?')->execute([$bookingId]);
                 db()->prepare('UPDATE cars SET status = "available" WHERE id = ?')->execute([$b['car_id']]);
                 notify($b['user_id'], 'Booking Cancelled', 'Your booking #' . $bookingId . ' has been cancelled by admin.', 'booking');
+                emailBookingCancelled($bookingId);
                 break;
             case 'verify_payment':
                 db()->prepare('UPDATE payments SET status = "paid" WHERE booking_id = ?')->execute([$bookingId]);
                 notify($b['user_id'], 'Payment Verified', 'Your payment for booking #' . $bookingId . ' has been verified. Thank you!', 'payment');
+                emailPaymentVerified($bookingId);
                 break;
         }
     }

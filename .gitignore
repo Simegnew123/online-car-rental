@@ -9,8 +9,11 @@
 # Uploads (keep dirs, ignore content)
 uploads/cars/*
 uploads/licenses/*
+uploads/receipts/*
 !uploads/cars/.gitkeep
 !uploads/licenses/.gitkeep
+!uploads/receipts/.gitkeep
+uploads/email_log.txt
 
 # IDE
 .vscode/

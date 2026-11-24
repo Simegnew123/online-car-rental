@@ -49,6 +49,7 @@ include __DIR__ . '/../includes/header.php';
     <a href="<?= APP_URL ?>/admin/users.php" class="btn btn-warning">Manage Users</a>
     <a href="<?= APP_URL ?>/admin/gps_tracking.php" class="btn btn-outline">GPS Tracking</a>
     <a href="<?= APP_URL ?>/admin/reports.php" class="btn btn-primary">Reports</a>
+    <a href="<?= APP_URL ?>/admin/settings.php" class="btn btn-outline">Settings</a>
 </div>
 
 <!-- Charts -->

@@ -14,9 +14,9 @@ $error   = '';
 $success = '';
 
 // Add-on pricing (ETB)
-$DRIVER_RATE   = 500;  // per day
-$AIRPORT_FEE   = 300;  // flat
-$INSURANCE_RATE = 0.10; // 10% of base rental
+$DRIVER_RATE   = DRIVER_RATE_PER_DAY;
+$AIRPORT_FEE   = AIRPORT_FEE_FLAT;
+$INSURANCE_RATE = INSURANCE_RATE;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $startDate = $_POST['start_date'] ?? '';

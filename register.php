@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/mail.php';
 
 $error   = '';
 $success = '';
@@ -32,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!$error && registerUser($name, $email, $password, $phone, $license, $licenseImage)) {
+            emailWelcome($name, $email);
             attemptLogin($email, $password);
             redirect('index.php');
         } elseif (!$error) {

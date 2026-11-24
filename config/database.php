@@ -17,6 +17,15 @@ define('DB_PASS', '');
 define('UPLOAD_DIR', __DIR__ . '/../uploads/');
 define('UPLOAD_URL', APP_URL . '/uploads');
 
+// Email configuration
+define('MAIL_FROM', 'noreply@carrental.et');
+define('MAIL_FROM_NAME', 'CarRental GPS');
+
+// Add-on pricing defaults (ETB)
+define('DRIVER_RATE_PER_DAY', 500);
+define('AIRPORT_FEE_FLAT', 300);
+define('INSURANCE_RATE', 0.10);
+
 // Database connection
 function db() {
     static $pdo = null;

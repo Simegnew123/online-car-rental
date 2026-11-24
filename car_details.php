@@ -77,6 +77,17 @@ include __DIR__ . '/includes/header.php';
         </div>
         <p style="margin:16px 0;color:var(--gray);"><?= e($car['description'] ?: 'No description available.') ?></p>
         <div class="car-price" style="font-size:1.8rem;margin-bottom:16px;"><?= money($car['price_per_day']) ?><small style="font-size:1rem;">/day</small></div>
+
+        <!-- Add-on pricing info -->
+        <div style="background:var(--lighter);border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;margin-bottom:16px;">
+            <div style="font-size:.82rem;color:var(--gray);margin-bottom:8px;font-weight:600;">Available Add-ons:</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:.85rem;">
+                <span>&#128110; Driver <strong><?= money(DRIVER_RATE_PER_DAY) ?>/day</strong></span>
+                <span>&#9992; Airport <strong><?= money(AIRPORT_FEE_FLAT) ?></strong></span>
+                <span>&#128737; Insurance <strong><?= (INSURANCE_RATE*100) ?>%</strong></span>
+            </div>
+        </div>
+
         <div style="margin-bottom:16px;">
             <span class="star-display"><?= str_repeat('&#9733;', (int)carRating($carId)) ?></span>
             <strong><?= carRating($carId) ?>/5</strong>
