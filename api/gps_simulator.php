@@ -24,8 +24,8 @@ try {
     }
 
     // Center around Addis Ababa
-    $baseLat = 9.005;
-    $baseLng = 38.760;
+    $baseLat = 9.025;
+    $baseLng = 38.747;
 
     $inserted = 0;
     foreach ($cars as $car) {
@@ -44,25 +44,32 @@ try {
             $heading = (float)$last['heading'];
         } else {
             // Random start near city center
-            $lat = $baseLat + (mt_rand(-500, 500) / 10000);
-            $lng = $baseLng + (mt_rand(-500, 500) / 10000);
+            $lat = $baseLat + (mt_rand(-300, 300) / 10000);
+            $lng = $baseLng + (mt_rand(-300, 300) / 10000);
             $heading = mt_rand(0, 359);
         }
 
-        // Movement: cars with status "rented" move; others idle slowly
+        // Movement: cars with status "rented" move; others stay parked
         if ($car['status'] === 'rented') {
-            $speed = mt_rand(20, 90);
-            $heading += mt_rand(-10, 10);
+            $speed = mt_rand(30, 80);
+            // Turn slightly
+            $heading += mt_rand(-20, 20);
             if ($heading < 0) $heading += 360;
             if ($heading >= 360) $heading -= 360;
-            // Move ~speed/500 degrees per reading
-            $lat += cos(deg2rad($heading)) * $speed / 4000 / 100;
-            $lng += sin(deg2rad($heading)) * $speed / 4000 / 100;
+
+            // Visible movement: ~0.001-0.003 degrees per step (~100-300 meters)
+            $moveStep = $speed / 30000;  // 0.001 to 0.0027 degrees
+            $lat += cos(deg2rad($heading)) * $moveStep;
+            $lng += sin(deg2rad($heading)) * $moveStep;
+
+            // Keep within Addis Ababa bounds
+            if ($lat < 8.95) { $lat = 8.95; $heading = mt_rand(0, 180); }
+            if ($lat > 9.10) { $lat = 9.10; $heading = mt_rand(180, 360); }
+            if ($lng < 38.68) { $lng = 38.68; $heading = mt_rand(270, 450) % 360; }
+            if ($lng > 38.82) { $lng = 38.82; $heading = mt_rand(90, 270); }
         } else {
+            // Parked cars don't move
             $speed = 0;
-            // tiny drift
-            $lat += (mt_rand(-3, 3) / 100000);
-            $lng += (mt_rand(-3, 3) / 100000);
         }
 
         $deviceId = 'SIM-' . str_pad($car['id'], 3, '0', STR_PAD_LEFT);
@@ -77,7 +84,7 @@ try {
 
     echo json_encode([
         'success' => true,
-        'message' => $inserted . ' vehicles updated with simulated positions'
+        'message' => $inserted . ' vehicles updated — rented cars are moving!'
     ]);
 
 } catch (Exception $e) {

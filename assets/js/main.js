@@ -254,15 +254,48 @@ function toggleGpsRefresh() {
 // =====================================================
 // GPS SIMULATOR — sends fake GPS data to API
 // =====================================================
-function startGpsSimulator() {
-    if (!confirm('Start GPS simulation? This will generate fake vehicle movement data.')) return;
+var simInterval = null;
+var simRunning = false;
 
+function startGpsSimulator() {
+    var btn = event ? event.target : null;
+
+    if (simRunning) {
+        // Stop simulation
+        clearInterval(simInterval);
+        simInterval = null;
+        simRunning = false;
+        if (btn) {
+            btn.innerHTML = '\uD83D\uDE40 Simulate Movement';
+            btn.classList.remove('btn-danger');
+            btn.classList.add('btn-primary');
+        }
+        showToast('GPS simulation stopped', 'info');
+        return;
+    }
+
+    if (!confirm('Start GPS simulation? This will generate fake vehicle movement data for rented cars every 3 seconds.')) return;
+
+    simRunning = true;
+    if (btn) {
+        btn.innerHTML = '\u23F9 Stop Simulation';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-danger');
+    }
+
+    // Run once immediately
+    runSimStep();
+
+    // Then keep running every 3 seconds
+    simInterval = setInterval(runSimStep, 3000);
+}
+
+function runSimStep() {
     fetch(APP_URL + '/api/gps_simulator.php', { method: 'POST', credentials: 'same-origin' })
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.success) {
-                showToast('GPS simulation: ' + data.message, 'success');
-                loadCarLocations();
+                loadCarLocations();  // Refresh map immediately
             } else {
                 showToast('Simulation error: ' + data.error, 'error');
             }
