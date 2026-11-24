@@ -84,6 +84,9 @@ function uploadFile(string $field, string $prefix = 'file'): ?string {
     if ($prefix === 'license') {
         $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
     }
+    if ($prefix === 'receipt') {
+        $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+    }
     if (!in_array($ext, $allowed)) {
         return null;
     }
@@ -93,6 +96,7 @@ function uploadFile(string $field, string $prefix = 'file'): ?string {
     $subdir = '';
     if ($prefix === 'car') $subdir = 'cars/';
     elseif ($prefix === 'license') $subdir = 'licenses/';
+    elseif ($prefix === 'receipt') $subdir = 'receipts/';
 
     $destDir = UPLOAD_DIR . $subdir;
     if (!is_dir($destDir)) {

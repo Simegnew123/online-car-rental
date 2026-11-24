@@ -438,12 +438,15 @@ a:hover { color: var(--primary-dk); }
 .btn-warning:hover { opacity: .9; color: var(--white); }
 .btn-danger { background: var(--danger); color: var(--white); }
 .btn-danger:hover { background: #b91c1c; color: var(--white); }
+.btn-info { background: #3b82f6; color: var(--white); }
+.btn-info:hover { background: #2563eb; color: var(--white); }
 .btn-outline {
     background: transparent;
     color: var(--primary);
     border: 1.5px solid var(--primary);
 }
 .btn-outline:hover { background: var(--primary); color: var(--white); }
+.btn-outline.active { background: var(--primary); color: var(--white); }
 .btn-sm { padding: 6px 14px; font-size: .82rem; }
 .btn-block { width: 100%; }
 .btn-lg { padding: 14px 32px; font-size: 1.05rem; }

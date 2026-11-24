@@ -59,14 +59,14 @@ function attemptLogin(string $email, string $password): bool {
 }
 
 // Register a new user
-function registerUser(string $name, string $email, string $password, string $phone, string $license = ''): bool {
+function registerUser(string $name, string $email, string $password, string $phone, string $license = '', ?string $licenseImage = null): bool {
     $hash = password_hash($password, PASSWORD_DEFAULT);
     $stmt = db()->prepare(
-        'INSERT INTO users (full_name, email, password, phone, license_number, role, status)
-         VALUES (?, ?, ?, ?, ?, "customer", "active")'
+        'INSERT INTO users (full_name, email, password, phone, license_number, license_image, role, status)
+         VALUES (?, ?, ?, ?, ?, ?, "customer", "active")'
     );
     try {
-        $stmt->execute([$name, $email, $hash, $phone, $license]);
+        $stmt->execute([$name, $email, $hash, $phone, $license, $licenseImage]);
         return true;
     } catch (PDOException $e) {
         return false; // duplicate email etc.
