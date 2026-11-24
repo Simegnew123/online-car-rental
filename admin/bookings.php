@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST[
                 break;
         }
     }
-    redirect('bookings.php');
+    redirect('admin/bookings.php');
 }
 
 // Fetch all bookings with filters

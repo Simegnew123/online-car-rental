@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name, $brand, $type, $fuelType, $transmission, $seats, $doors, $luggage,
             $price, $ac, $bluetooth, $featured, $desc, $image
         ]);
-        redirect('cars.php');
+        redirect('admin/cars.php');
     }
 }
 

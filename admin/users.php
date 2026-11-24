@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'], $_POST['ac
                 break;
         }
     }
-    redirect('users.php');
+    redirect('admin/users.php');
 }
 
 $users = db()->query('SELECT * FROM users ORDER BY created_at DESC')->fetchAll();

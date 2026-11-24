@@ -7,7 +7,7 @@ $carId = (int)($_GET['id'] ?? 0);
 $car   = getCar($carId);
 
 if (!$car) {
-    redirect('cars.php');
+    redirect('admin/cars.php');
 }
 
 $error = '';
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name, $brand, $type, $fuelType, $transmission, $seats, $doors, $luggage,
             $price, $ac, $bluetooth, $featured, $desc, $image, $status, $carId
         ]);
-        redirect('cars.php');
+        redirect('admin/cars.php');
     }
 }
 

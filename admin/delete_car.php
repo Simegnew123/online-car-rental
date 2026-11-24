@@ -12,7 +12,7 @@ $activeBookings = (int)$stmt->fetchColumn();
 
 if ($activeBookings > 0) {
     // Can't delete, redirect with error
-    redirect('cars.php?error=active_bookings');
+    redirect('admin/cars.php?error=active_bookings');
 }
 
 // Delete the car
@@ -22,4 +22,4 @@ db()->prepare('DELETE FROM cars WHERE id = ?')->execute([$carId]);
 db()->prepare('DELETE FROM reviews WHERE car_id = ?')->execute([$carId]);
 db()->prepare('DELETE FROM gps_logs WHERE car_id = ?')->execute([$carId]);
 
-redirect('cars.php');
+redirect('admin/cars.php');
